@@ -7,14 +7,13 @@ var lib=require('../db/lib');
 const { v4: uuidv4 } = require('uuid');
 
 module.exports=(io)=>{
-	io.on("connection",(socket)=>{
-		let name=socket.handshake.query.name;
-		let room=socket.handshake.query.room;
-		User.findOne({account: name},(err,user)=>{
-			if(user){
-				socket.join(user.rooms);
-			}
-		});
+	io.on("connection",async(socket)=>{
+		let name=await socket.handshake.query.name;
+		let room=await socket.handshake.query.room;
+		let user=await User.findOne({account: name});
+		if(user){
+			await socket.join(user.rooms);
+		}
 		socket.on("get_init_data",async()=>{
 			let data=await socket_controller.init_data(name,room);
 			socket.emit('receive_data',data);			
@@ -38,27 +37,24 @@ module.exports=(io)=>{
 		});
 		socket.on("check",async(data)=>{
 			if(data.room){
-				await Room.findOne({num: data.room},async(err,room)=>{
-					if(room.member.includes(name)){
-						let result=new Object();
-						result.rooms=room;
-						await Message.find({room: data.room},null,{sort: {createdate: 'desc'}},(err,msg)=>{ //find last msg(need to be fixed)
-							result.rooms.message=msg[0];
-							socket.emit("receive_data",result);
-						});
-					}
-				});
+				let res_room=await Room.findOne({num: data.room});
+				if(res_room.member.includes(name)){
+					let result=new Object();
+					result.rooms=res_room;
+					let msg=await Message.find({room: data.room},null,{sort:{createdate: 'desc'}});
+					result.rooms.message=msg[0];
+					socket.emit("receive_data",result);
+				}
 			}
 			if(data.friend){
 				if(data.friend.includes(name)){
 					let result=new Object();
-					await Room.findOne( { $and: [ {member: name}, {single: true} ,{member:{$size: 2}}]},(err,room)=>{
-						for(let i=0;i<data.friend.length;i++){
-							if(data.friend[i]!=name){
-								result[data.friend[i]]=room.num;
-							}
+					let res_room=await Room.findOne( { $and: [ {member: name}, {single: true} ,{member:{$size: 2}}]});
+					for(let i=0;i<data.friend.length;i++){
+						if(data.friend[i]!=name){
+							result[data.friend[i]]=res_room.num;
 						}
-					});
+					}
 					socket.emit("receive_data",result);
 				}
 			}
@@ -103,38 +99,27 @@ module.exports=(io)=>{
 			lib.exit_msg(room,name);
 			if(result===200){
 				let res_val;
-				await User.findOne({account: name},(err,user)=>{
-					if(err){
-						console.log("error at drop_out_room");
-						res_val=500;
-					}
-					else if(!user){
-						console.log("not found at drop_out_room");
-						res_val=404;
-					}
-					else{
-						res_val=user.rooms[0];
-					}
-				});
+				if(!user){
+					console.log("not found at drop_out_room");
+					res_val=404;
+				}
+				else{
+					res_val=user.rooms[0];
+				}
 				if((res_val!=500)||(res_val!=404)){
 					socket.emit("exit_room",res_val);
 				}	
 			}
 		});
-		socket.on("load_friend_create_room",()=>{
-			User.findOne({account: name},async(err,user)=>{
-				if(err){
-					console.log("error at load_friend_create_room");
-				}
-				else if(!user){
-					console.log("not found at load_friend_create_room");
-				}
-				else{
-					let data=new Object();
-					data.friends_allow_to_room=await socket_controller.friends_to_room(user.friends);
-					socket.emit("receive_data",data);
-				}
-			});
+		socket.on("load_friend_create_room",async()=>{
+			if(!user){
+				console.log("not found at load_friend_create_room");
+			}
+			else{
+				let data=new Object();
+				data.friends_allow_to_room=await socket_controller.friends_to_room(user.friends);
+				socket.emit("receive_data",data);
+			}
 		});
 	});
 }

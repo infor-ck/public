@@ -8,21 +8,18 @@ const { v4: uuidv4 } = require('uuid');
 //check if user logined
 //cookie_logined,cookie_name
 exports.auth=async(cookie_logined,cookie_name)=>{
-	let result;
 	if(cookie_logined){
-		await User.findOne({account: cookie_name},(err,user)=>{
-			if(user){
-				result=200;
-			}
-			else{
-				result=404;
-			}
-		});
+		let user=await User.findOne({account: cookie_name});
+		if(user){
+			return 200;
+		}
+		else{
+			return 404;
+		}
 	}
 	else{
-		result=204;
+		return 204;
 	}
-	return result;
 }
 
 var setname=(member)=>{
@@ -153,10 +150,3 @@ exports.exit_msg=async(room,name)=>{
 	});
 }
 
-exports.test=async(name)=>{
-	console.log(name);
-	let pro=await User.findOne({account: name});
-	console.log(pro);
-	//pro.then((err,user)=>{console.log(user)});
-	return pro;
-}

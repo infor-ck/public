@@ -76,6 +76,9 @@ app.get("/chat",async(req,res,next)=>{
   	if((num!=404)&&(num!=500)){
   		res.redirect("/chat?room="+num);
   	}
+  	else{
+  		res.redirect("/login");
+  	}
   }
   else if(auth===200){
   	let msg_num;
