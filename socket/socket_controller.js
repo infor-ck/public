@@ -98,20 +98,28 @@ exports.friends_to_room=async(user_friends)=>{
 	return friends_allow_room;
 }
 
-//return msg [{},{}]
-var load_messages=async(room,start_point)=>{
-	let result;
-	await Message.find({room: room},null,{sort: {createdate: 'desc'}},(err,messages)=>{
+//return array[]
+var friends_to_room=async(user_friends)=>{
+	let friends_allow_room=[];
+	await User_Attr.find({account:{$in:user_friends}},(err,user_attrs)=>{
 		if(err){
-			console.log("load messages error at init_data");
-			result=500;
+			console.log(`error at friends_to_room ${err}`);
+			return false;
 		}
-		else{
-			let msg=messages.slice(start_point,start_point+30);
-			result=msg;
+		for(let i=0;i<user_attrs.length;i++){
+			if(user_attrs[i].allow_to_room===true){
+				friends_allow_room.push(user_attrs[i].account);
+			}
 		}
 	});
-	return result;
+	return friends_allow_room;
+}
+
+//return msg [{},{}]
+var load_messages=async(room,start_point)=>{
+	let messages=await Message.find({room: room},null,{sort: {createdate:'desc'}});
+	let msg=messages.slice(start_point,start_point+30);
+	return msg;
 }
 
 exports.init_data=async(name,room)=>{
@@ -121,12 +129,12 @@ exports.init_data=async(name,room)=>{
 		let rooms=await load_room(user,room);//get rooms
 		let origin_rooms=await check_origin(rooms);
 		let friends=await load_friends(user,origin_rooms);//get friends
-		//let friends_allow_to_room=await friends_to_room(user.friends);//get friends(allow_to_room)
+		let friends_allow_to_room=await friends_to_room(user.friends);//get friends(allow_to_room)
 		let messages=await load_messages(room,0);//init messages
-		if(rooms&&origin_rooms&&friends&&messages){
+		if(rooms&&origin_rooms&&friends&&messages&&friends_allow_to_room){
 			data.rooms=rooms;
 			data.friends=friends;
-			//data.friends_allow_to_room=friends_allow_to_room;
+			data.friends_allow_to_room=friends_allow_to_room;
 			data.messages=messages;
 		}
 		return data;

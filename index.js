@@ -122,6 +122,7 @@ app.post("/login",async(req,res,next)=>{
 		res.redirect("/login");
 	}
 });
+//something went wrong
 app.post("/register",async(req,res,next)=>{
 	let result=204;
 	if(req.body.user&&req.body.passwd&&req.body.passwd_confirm){

@@ -66,21 +66,16 @@ exports.register=async(name,password,password_auth)=>{
 		result=406;
 	}
 	let pwd=await lib.create_crypto(password,"jizz7122");
-	await User.findOne({account: name},async(err,user)=>{
-		if(err){
-			console.log("err at register");
-			result=500;
-		}
-		if(user){
-			console.log("user exists at register");
-			result=302;
-		}
-		else{
-			let num=await lib.createroom([name]);
-			await create_user(name,pwd,num);
-			result=200;
-		}
-	});
+	let user=await User.findOne({account: name});
+	if(user){
+		console.log("user exists at register");
+		result=302;
+	}
+	else{
+		let num=await lib.createroom([name]);
+		await create_user(name,pwd,num);
+		result=200;
+	}
 	return result;
 }
 

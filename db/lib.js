@@ -152,3 +152,11 @@ exports.exit_msg=async(room,name)=>{
 		}
 	});
 }
+
+exports.test=async(name)=>{
+	console.log(name);
+	let pro=await User.findOne({account: name});
+	console.log(pro);
+	//pro.then((err,user)=>{console.log(user)});
+	return pro;
+}

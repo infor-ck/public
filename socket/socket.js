@@ -11,7 +11,9 @@ module.exports=(io)=>{
 		let name=socket.handshake.query.name;
 		let room=socket.handshake.query.room;
 		User.findOne({account: name},(err,user)=>{
-			socket.join(user.rooms);
+			if(user){
+				socket.join(user.rooms);
+			}
 		});
 		socket.on("get_init_data",async()=>{
 			let data=await socket_controller.init_data(name,room);
