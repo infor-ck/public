@@ -343,7 +343,7 @@
 <script>
     var acc="#name#";
     var cont = $('#content');
-    var socket=io("http://localhost:8080",{
+    var socket=io("https://chat.infor.org",{
         path: "/chat",
         transports: ['websocket'],
         query: {
@@ -518,7 +518,7 @@
         socket.emit("drop_out_room");
     });
     socket.on("exit_room",(room)=>{
-        window.location.href="http://localhost:8080/chat?room="+room;
+        window.location.href="https://chat.infor.org/chat?room="+room;
     });
 </script>
 </html>
