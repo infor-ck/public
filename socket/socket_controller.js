@@ -35,11 +35,11 @@ var load_room=async(user,room)=>{
 	let msg;
 	let last_msg;
 	let rooms=await Room.find({member:user.account});
-	for(let i=0;i<rooms.length;i++){
+	/*for(let i=0;i<rooms.length;i++){
 		msg=await Message.find({room: rooms[i].num},null,{sort: {createdate:'desc'}});
-		last_msg=msg[msg.length-1];
+		last_msg=msg[0].account+": "+msg[0].content;
 		rooms[i].message=last_msg;
-	};
+	}; */
 	return rooms;
 }
 

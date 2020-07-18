@@ -105,23 +105,8 @@
                                 <span class="mdi mdi-account-multiple-plus-outline text-blue-500 text-4xl"></span>
                                 <p class="text-xl">建立群組</p>
 
-                                <form action="" method="post" class="p-3" id="createroom">
-                                    <label class="list-item custom-checkbox">
-                                        <div class="flex items-center">
-                                            <span class="mdi mdi-account text-xl text-gray-600 mr-4"></span>
-                                            <p class="text-gray-900">朋友</p>
-                                        </div>
-                                        <input type="checkbox" name="acc[]" value="jizz">
-                                        <span class="custom-checkbox-icon"></span>
-                                    </label>
-                                    <label class="list-item custom-checkbox">
-                                        <div class="flex items-center">
-                                            <span class="mdi mdi-account text-xl text-gray-600 mr-4"></span>
-                                            <p class="text-gray-900">朋友</p>
-                                        </div>
-                                        <input type="checkbox" name="acc[]" value="7122">
-                                        <span class="custom-checkbox-icon"></span>
-                                    </label>
+                                <form action="" method="post" class="p-3" id="add_room">
+                                    <div id="createroom"></div>
 
                                     <div class="mt-4 grid grid-cols-2 gap-4">
                                         <button class="btn btn-secondary" type="reset"
@@ -402,7 +387,7 @@
                 let fatr_add=fatr_base1+data.friends_allow_to_room[i]+fatr_base2+data.friends_allow_to_room[i]+fatr_base3;
                 friends_allow_to_room+=fatr_add;    
             }
-            $('createroom').append(friends_allow_to_room);
+            $('#createroom').append(friends_allow_to_room);
         }
         if(data.add_member){
             let add_room_member="";
@@ -472,7 +457,7 @@
         socket.emit("load_friend_create_room");
     });
     //createroom
-    $('#createroom').submit((e)=>{
+    $('#add_room').submit((e)=>{
         e.preventDefault();
         return false;
     });

@@ -131,6 +131,11 @@ exports.save_msg=async(content,name,room)=>{
 			console.log("save msg error at save_msg");
 		}
 	});
+	await Room.updateOne({num: room},{$set: {last_msg: Date.now()}},(err)=>{
+		if(err){
+			console.log("error update pwd at chpwd");
+		}
+	});
 	return new_msg;
 }
 
