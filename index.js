@@ -51,8 +51,13 @@ app.use(cookieSession({
 app.get("/",(req,res,next)=>{
   res.sendFile(__dirname+"/views/index.html");
 });
+<<<<<<< HEAD
 app.get("/login",async(req,res,next)=>{
   let auth=await lib.auth(req.session.logined,req.session.name);
+=======
+app.get("/login",(req,res,next)=>{
+  let auth=lib.auth(req.session.logined,req.session.name);
+>>>>>>> 6c56b575002565c5d2295fd5af3190905a0d9411
   if(auth===200){
   	res.redirect("/chat");
   }
@@ -60,8 +65,13 @@ app.get("/login",async(req,res,next)=>{
   	res.sendFile(__dirname+"/views/login.html");
   }
 });
+<<<<<<< HEAD
 app.get("/register",async(req,res,next)=>{
   let auth=await lib.auth(req.session.logined,req.session.name);
+=======
+app.get("/register",(req,res,next)=>{
+  let auth=lib.auth(req.session.logined,req.session.name);
+>>>>>>> 6c56b575002565c5d2295fd5af3190905a0d9411
   if(auth===200){
   	res.redirect("/chat");
   }

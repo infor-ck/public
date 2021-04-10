@@ -206,7 +206,11 @@
                     <div x-show="action=='none'" class="absolute w-full">
                         <div class="text-center p-3">
                             <span class="mdi mdi-account-group-outline text-blue-500 text-5xl"></span>
+<<<<<<< HEAD
                             <h4 class="text-gray-900 text-xl" id="room_name"></h4>
+=======
+                            <h4 class="text-gray-900 text-xl">群組</h4>
+>>>>>>> 6c56b575002565c5d2295fd5af3190905a0d9411
                         </div>
 
                         <hr class="border-gray-300">
@@ -238,8 +242,14 @@
                                 <span class="mdi mdi-account-plus text-blue-500 text-xl"></span>
                                 <p class="ml-4">新增成員</p>
                             </button>
+<<<<<<< HEAD
                             <div id="room_member">
                                 
+=======
+                            <div class="list-item justify-start">
+                                <span class="mdi mdi-account text-gray-600 text-xl"></span>
+                                <p class="ml-4">朋友</p>
+>>>>>>> 6c56b575002565c5d2295fd5af3190905a0d9411
                             </div>
                         </div>
                     </div>
@@ -308,12 +318,27 @@
                             </div>
 
                             <form action="" class="my-2" id="add_member">
+<<<<<<< HEAD
                                 <div id="member_to_room"></div>
+=======
+                                <label class="list-item custom-checkbox">
+                                    <div class="flex items-center">
+                                        <span class="mdi mdi-account text-xl text-gray-600 mr-4"></span>
+                                        <p class="text-gray-900">朋友</p>
+                                    </div>
+                                    <input type="checkbox" name="" id="member_add" value="">
+                                    <span class="custom-checkbox-icon"></span>
+                                </label>
+>>>>>>> 6c56b575002565c5d2295fd5af3190905a0d9411
 
                                 <div class="mt-4 grid grid-cols-2 gap-4">
                                     <button class="btn btn-secondary" type="reset"
                                         @click.prevent="action='none'">取消</button>
+<<<<<<< HEAD
                                     <button type="submit" class="btn btn-primary" id="member_click">新增</button>
+=======
+                                    <button type="submit" class="btn btn-primary">新增</button>
+>>>>>>> 6c56b575002565c5d2295fd5af3190905a0d9411
                                 </div>
                             </form>
 
@@ -335,7 +360,11 @@
 <script>
     var acc="#name#";
     var cont = $('#content');
+<<<<<<< HEAD
     var socket=io("http://localhost:8080",{
+=======
+    var socket=io("https://chat.infor.org",{
+>>>>>>> 6c56b575002565c5d2295fd5af3190905a0d9411
         path: "/chat",
         transports: ['websocket'],
         query: {
@@ -348,14 +377,19 @@
     socket.on("receive_data",(data)=>{
         console.log(data);
         if(data.rooms){
+<<<<<<< HEAD
             let rooms=""; 
             let members="";
             let add_room_member="";
             let room_num=window.location.search.slice(6);
+=======
+            let rooms="";
+>>>>>>> 6c56b575002565c5d2295fd5af3190905a0d9411
             let room_base1='<a href="/chat?room=';
             let room_base2='" onclick="sidebarToggle()" class="aside-item"><span class="mdi mdi-account-group-outline text-gray-700 text-4xl mr-4"></span><div class="inline-block"><h4 class="text-gray-900 text-lg">';
             let room_base3='</h4><p class="text-gray-600">';
             let room_base4='</p></div></a>';
+<<<<<<< HEAD
             let member_base1='<div class="list-item justify-start"><span class="mdi mdi-account text-gray-600 text-xl"></span><p class="ml-4">';
             let member_base2='</p></div>';
             let adr_base1='<label class="list-item custom-checkbox"><div class="flex items-center"><span class="mdi mdi-account text-xl text-gray-600 mr-4"></span><p class="text-gray-900">';
@@ -381,6 +415,11 @@
                         $('#member_to_room').append(add_room_member);
                     }
                 }
+=======
+            for(let i=0;i<data.rooms.length;i++){
+                let room_add=room_base1+data.rooms[i].num+room_base2+data.rooms[i].name+room_base3+data.rooms[i].message+room_base4;
+                rooms+=room_add;    
+>>>>>>> 6c56b575002565c5d2295fd5af3190905a0d9411
             }
             $('#add_rooms').append(rooms);
         }
@@ -406,6 +445,20 @@
             }
             $('#createroom').append(friends_allow_to_room);
         }
+<<<<<<< HEAD
+=======
+        if(data.add_member){
+            let add_room_member="";
+            let adr_base1='<label class="list-item custom-checkbox"><div class="flex items-center"><span class="mdi mdi-account text-xl text-gray-600 mr-4"></span><p class="text-gray-900">';
+            let adr_base2='</p></div><input type="checkbox" name="" id="member_add" value="';
+            let adr_base3='"><span class="custom-checkbox-icon"></span></label>';
+            for(let i=0;i<data.add_member.length;i++){
+                let adr_add=adr_base1+data.add_member[i]+adr_base2+data.add_member[i]+adr_base3;
+                add_room_member+=adr_add;
+            } 
+            $('#add_member').append(add_room_member);
+        }
+>>>>>>> 6c56b575002565c5d2295fd5af3190905a0d9411
         if(data.messages){
             let messages="";
             let message1_base1='<!-- message --><div class="message"><div class="message-profile-photo"><span class="mdi mdi-account-circle text-gray-700 text-2xl"></span></div><div class="message-content"><h4>';
@@ -439,7 +492,10 @@
                 }
                 messages+=message_add;
             }
+<<<<<<< HEAD
             msg_num+=data.messages.length;
+=======
+>>>>>>> 6c56b575002565c5d2295fd5af3190905a0d9411
             if(data.send_msg){
                 $('#content').append(messages);
                 cont.scrollTop(cont.prop("scrollHeight"));
@@ -450,6 +506,10 @@
                 $('#content').prepend(messages);
                 $('#content').scrollTop(oldFirstChild.offset().top - 78);
             }
+<<<<<<< HEAD
+=======
+            msg_num+=data.messages.length;
+>>>>>>> 6c56b575002565c5d2295fd5af3190905a0d9411
         }
     });
     //send msg
@@ -459,9 +519,15 @@
         $('#msg_content').val('');
         return false;
     });
+<<<<<<< HEAD
     /*$('#clickroom').on("click",()=>{
         socket.emit("load_friend_create_room");
     });*/
+=======
+    $('clickroom').on("click",()=>{
+        socket.emit("load_friend_create_room");
+    });
+>>>>>>> 6c56b575002565c5d2295fd5af3190905a0d9411
     //createroom
     $('#add_room').submit((e)=>{
         e.preventDefault();
@@ -478,13 +544,18 @@
         }
         $('#createroom').reset();
     });
+<<<<<<< HEAD
     /*let cls_member=()=>{
+=======
+    let cls_member=()=>{
+>>>>>>> 6c56b575002565c5d2295fd5af3190905a0d9411
         let check=$('input');
         for(let i=0;i<check.length;i++){
             if(check[i].type==="checkbox"){
                 check[i].checked=false;
             }
         }
+<<<<<<< HEAD
     }*/
     $('#member_click').click(function() {
         let val=[];
@@ -496,6 +567,9 @@
         }
         $('#add_member').reset();
     });
+=======
+    }
+>>>>>>> 6c56b575002565c5d2295fd5af3190905a0d9411
     socket.emit("rdurl",(url)=>{
         window.location.href=url;
     })
@@ -508,9 +582,16 @@
         $('#friend').val('');
         return false;
     });
+<<<<<<< HEAD
 
     $('#add_member').submit((e)=>{
         e.preventDefault();
+=======
+    $('#add_member').submit((e)=>{
+        e.preventDefault();
+        socket.emit("add_member",$('#member_add').val());
+        $('#member_add').val('');
+>>>>>>> 6c56b575002565c5d2295fd5af3190905a0d9411
         return false;
     });
     $('#search_msg').submit((e)=>{
@@ -533,7 +614,11 @@
         socket.emit("drop_out_room");
     });
     socket.on("exit_room",(room)=>{
+<<<<<<< HEAD
         window.location.href="http://localhost:8080/chat?room="+room;
+=======
+        window.location.href="https://chat.infor.org/chat?room="+room;
+>>>>>>> 6c56b575002565c5d2295fd5af3190905a0d9411
     });
 </script>
 </html>

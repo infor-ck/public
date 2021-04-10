@@ -98,7 +98,10 @@ var load_messages=async(room,start_point)=>{
 	return msg;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6c56b575002565c5d2295fd5af3190905a0d9411
 exports.init_data=async(name,room)=>{
 	let user=await check_exist(name,room);
 	let data=new Object();
